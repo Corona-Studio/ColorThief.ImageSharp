@@ -7,14 +7,14 @@ public class VBox
 {
     private readonly int[] histo;
     private int[]? _avg;
+    private int? _count;
+    private int? _volume;
     public int B1;
     public int B2;
-    private int? _count;
     public int G1;
     public int G2;
     public int R1;
     public int R2;
-    private int? _volume;
 
     public VBox(int r1, int r2, int g1, int g2, int b1, int b2, int[] histo)
     {

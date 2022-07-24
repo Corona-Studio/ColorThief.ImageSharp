@@ -33,11 +33,9 @@ public class ColorThief
     {
         var expectedDataLength = pixelCount * ColorDepth;
         if (expectedDataLength != pixels.Length)
-        {
             throw new ArgumentException("(expectedDataLength = "
                                         + expectedDataLength + ") != (pixels.length = "
                                         + pixels.Length + ")");
-        }
 
         // Store the RGB values in an array format suitable for quantize
         // function
@@ -84,7 +82,8 @@ public class ColorThief
     /// </param>
     /// <param name="ignoreWhite">if set to <c>true</c> [ignore white].</param>
     /// <returns></returns>
-    public QuantizedColor GetColor<T>(Image<T> sourceImage, int quality = DefaultQuality, bool ignoreWhite = DefaultIgnoreWhite) where T : unmanaged, IPixel<T>
+    public QuantizedColor GetColor<T>(Image<T> sourceImage, int quality = DefaultQuality,
+        bool ignoreWhite = DefaultIgnoreWhite) where T : unmanaged, IPixel<T>
     {
         var palette = GetPalette(sourceImage, 3, quality, ignoreWhite);
 
@@ -113,7 +112,8 @@ public class ColorThief
     /// <param name="ignoreWhite">if set to <c>true</c> [ignore white].</param>
     /// <returns></returns>
     /// <code>true</code>
-    public List<QuantizedColor> GetPalette<T>(Image<T> sourceImage, int colorCount = DefaultColorCount, int quality = DefaultQuality, bool ignoreWhite = DefaultIgnoreWhite) where T : unmanaged, IPixel<T>
+    public List<QuantizedColor> GetPalette<T>(Image<T> sourceImage, int colorCount = DefaultColorCount,
+        int quality = DefaultQuality, bool ignoreWhite = DefaultIgnoreWhite) where T : unmanaged, IPixel<T>
     {
         var pixelArray = GetPixelsFast(sourceImage, quality, ignoreWhite);
         var cmap = GetColorMap(pixelArray, colorCount);
@@ -122,15 +122,14 @@ public class ColorThief
             var colors = cmap.GeneratePalette();
             return colors;
         }
+
         return new List<QuantizedColor>();
     }
 
-    private byte[][] GetPixelsFast<T>(Image<T> sourceImage, int quality, bool ignoreWhite) where T : unmanaged, IPixel<T>
+    private byte[][] GetPixelsFast<T>(Image<T> sourceImage, int quality, bool ignoreWhite)
+        where T : unmanaged, IPixel<T>
     {
-        if (quality < 1)
-        {
-            quality = DefaultQuality;
-        }
+        if (quality < 1) quality = DefaultQuality;
 
         var pixels = GetIntFromPixel(sourceImage);
         var pixelCount = sourceImage.Width * sourceImage.Height;
@@ -144,24 +143,22 @@ public class ColorThief
         var count = 0;
 
         for (var x = 0; x < bmp.Width; x++)
+        for (var y = 0; y < bmp.Height; y++)
         {
-            for (var y = 0; y < bmp.Height; y++)
-            {
-                var clr = new Rgba32();
-                bmp[x, y].ToRgba32(ref clr);
+            var clr = new Rgba32();
+            bmp[x, y].ToRgba32(ref clr);
 
-                pixelList[count] = clr.B;
-                count++;
+            pixelList[count] = clr.B;
+            count++;
 
-                pixelList[count] = clr.G;
-                count++;
+            pixelList[count] = clr.G;
+            count++;
 
-                pixelList[count] = clr.R;
-                count++;
+            pixelList[count] = clr.R;
+            count++;
 
-                pixelList[count] = clr.A;
-                count++;
-            }
+            pixelList[count] = clr.A;
+            count++;
         }
 
         return pixelList;
