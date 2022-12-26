@@ -13,7 +13,7 @@ public class QuantizedColor
     public int Population { get; }
     public bool IsDark { get; }
 
-    public int CalculateYiqLuma(Color color)
+    public static int CalculateYiqLuma(Color color)
     {
         return Convert.ToInt32(Math.Round((299 * color.R + 587 * color.G + 114 * color.B) / 1000f));
     }

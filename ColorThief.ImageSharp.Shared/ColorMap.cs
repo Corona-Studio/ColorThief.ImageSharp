@@ -16,13 +16,10 @@ public class ColorMap
 
     public List<QuantizedColor> GeneratePalette()
     {
-        if (_palette == null)
-            _palette = (from vBox in vboxes
-                let rgb = vBox.Avg(false)
-                let color = FromRgb(rgb[0], rgb[1], rgb[2])
-                select new QuantizedColor(color, vBox.Count(false))).ToList();
-
-        return _palette;
+        return _palette ??= (from vBox in vboxes
+            let rgb = vBox.Avg(false)
+            let color = FromRgb(rgb[0], rgb[1], rgb[2])
+            select new QuantizedColor(color, vBox.Count(false))).ToList();
     }
 
     public int Size()
@@ -88,7 +85,7 @@ public class ColorMap
         return max;
     }
 
-    public Color FromRgb(int red, int green, int blue)
+    public static Color FromRgb(int red, int green, int blue)
     {
         var color = new Color
         {

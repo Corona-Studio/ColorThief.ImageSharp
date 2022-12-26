@@ -5,12 +5,12 @@ using Color = ColorThief.ImageSharp.Shared.Color;
 
 namespace ColorThief.ImageSharp;
 
-public class ColorThief
+public static class ColorThief
 {
-    public const int DefaultColorCount = 5;
-    public const int DefaultQuality = 10;
-    public const bool DefaultIgnoreWhite = true;
-    public const int ColorDepth = 4;
+    private const int DefaultColorCount = 5;
+    private const int DefaultQuality = 10;
+    private const bool DefaultIgnoreWhite = true;
+    private const int ColorDepth = 4;
 
     /// <summary>
     ///     Use the median cut algorithm to cluster similar colors.
@@ -18,7 +18,7 @@ public class ColorThief
     /// <param name="pixelArray">Pixel array.</param>
     /// <param name="colorCount">The color count.</param>
     /// <returns></returns>
-    private ColorMap? GetColorMap(byte[][] pixelArray, int colorCount)
+    private static ColorMap? GetColorMap(byte[][] pixelArray, int colorCount)
     {
         // Send array to quantize function which clusters values using median
         // cut algorithm
@@ -29,13 +29,13 @@ public class ColorThief
         return cmap;
     }
 
-    private byte[][] ConvertPixels(byte[] pixels, int pixelCount, int quality, bool ignoreWhite)
+    private static byte[][] ConvertPixels(IReadOnlyList<byte> pixels, int pixelCount, int quality, bool ignoreWhite)
     {
         var expectedDataLength = pixelCount * ColorDepth;
-        if (expectedDataLength != pixels.Length)
+        if (expectedDataLength != pixels.Count)
             throw new ArgumentException("(expectedDataLength = "
                                         + expectedDataLength + ") != (pixels.length = "
-                                        + pixels.Length + ")");
+                                        + pixels.Count + ")");
 
         // Store the RGB values in an array format suitable for quantize
         // function
@@ -82,7 +82,7 @@ public class ColorThief
     /// </param>
     /// <param name="ignoreWhite">if set to <c>true</c> [ignore white].</param>
     /// <returns></returns>
-    public QuantizedColor GetColor<T>(Image<T> sourceImage, int quality = DefaultQuality,
+    public static QuantizedColor GetColor<T>(Image<T> sourceImage, int quality = DefaultQuality,
         bool ignoreWhite = DefaultIgnoreWhite) where T : unmanaged, IPixel<T>
     {
         var palette = GetPalette(sourceImage, 3, quality, ignoreWhite);
@@ -112,7 +112,7 @@ public class ColorThief
     /// <param name="ignoreWhite">if set to <c>true</c> [ignore white].</param>
     /// <returns></returns>
     /// <code>true</code>
-    public List<QuantizedColor> GetPalette<T>(Image<T> sourceImage, int colorCount = DefaultColorCount,
+    public static List<QuantizedColor> GetPalette<T>(Image<T> sourceImage, int colorCount = DefaultColorCount,
         int quality = DefaultQuality, bool ignoreWhite = DefaultIgnoreWhite) where T : unmanaged, IPixel<T>
     {
         var pixelArray = GetPixelsFast(sourceImage, quality, ignoreWhite);
@@ -126,7 +126,7 @@ public class ColorThief
         return new List<QuantizedColor>();
     }
 
-    private byte[][] GetPixelsFast<T>(Image<T> sourceImage, int quality, bool ignoreWhite)
+    private static byte[][] GetPixelsFast<T>(Image<T> sourceImage, int quality, bool ignoreWhite)
         where T : unmanaged, IPixel<T>
     {
         if (quality < 1) quality = DefaultQuality;
@@ -137,7 +137,7 @@ public class ColorThief
         return ConvertPixels(pixels, pixelCount, quality, ignoreWhite);
     }
 
-    private byte[] GetIntFromPixel<T>(Image<T> bmp) where T : unmanaged, IPixel<T>
+    private static byte[] GetIntFromPixel<T>(Image<T> bmp) where T : unmanaged, IPixel<T>
     {
         var pixelList = new byte[bmp.Width * bmp.Height * 4];
         var count = 0;
