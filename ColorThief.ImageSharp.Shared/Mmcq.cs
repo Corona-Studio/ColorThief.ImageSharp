@@ -228,7 +228,7 @@ public static class Mmcq
 
         while (niters < MaxIterations)
         {
-            var vbox = lh[lh.Count - 1];
+            var vbox = lh[^1];
             if (vbox.Count(false) == 0)
             {
                 lh.Sort(comparator);
