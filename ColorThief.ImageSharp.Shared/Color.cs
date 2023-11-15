@@ -29,7 +29,7 @@ public struct Color
     ///     Get HSL color.
     /// </summary>
     /// <returns></returns>
-    public HslColor ToHsl()
+    public readonly HslColor ToHsl()
     {
         const double toDouble = 1.0 / 255;
         var r = toDouble * R;
@@ -61,12 +61,12 @@ public struct Color
         // ReSharper restore CompareOfFloatsByEqualityOperator
     }
 
-    public string ToHexString()
+    public readonly string ToHexString()
     {
         return "#" + R.ToString("X2") + G.ToString("X2") + B.ToString("X2");
     }
 
-    public string ToHexAlphaString()
+    public readonly string ToHexAlphaString()
     {
         return "#" + A.ToString("X2") + R.ToString("X2") + G.ToString("X2") + B.ToString("X2");
     }
