@@ -121,7 +121,7 @@ public static class ColorThief
             return colors;
         }
 
-        return new List<QuantizedColor>();
+        return [];
     }
 
     private static byte[][] GetPixelsFast<T>(Image<T> sourceImage, int quality, bool ignoreWhite)

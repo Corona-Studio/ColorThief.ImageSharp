@@ -5,18 +5,18 @@
 /// </summary>
 public class ColorMap
 {
-    private readonly List<VBox> vboxes = new();
+    private readonly List<VBox> _vBoxes = [];
     private List<QuantizedColor>? _palette;
 
     public void Push(VBox box)
     {
         _palette = null;
-        vboxes.Add(box);
+        _vBoxes.Add(box);
     }
 
     public List<QuantizedColor> GeneratePalette()
     {
-        return _palette ??= (from vBox in vboxes
+        return _palette ??= (from vBox in _vBoxes
             let rgb = vBox.Avg(false)
             let color = FromRgb(rgb[0], rgb[1], rgb[2])
             select new QuantizedColor(color, vBox.Count(false))).ToList();
@@ -24,12 +24,12 @@ public class ColorMap
 
     public int Size()
     {
-        return vboxes.Count;
+        return _vBoxes.Count;
     }
 
     public int[]? Map(int[] color)
     {
-        foreach (var vbox in vboxes.Where(vbox => vbox.Contains(color))) return vbox.Avg(false);
+        foreach (var vbox in _vBoxes.Where(vbox => vbox.Contains(color))) return vbox.Avg(false);
         return Nearest(color);
     }
 
@@ -38,7 +38,7 @@ public class ColorMap
         var d1 = double.MaxValue;
         int[]? pColor = null;
 
-        foreach (var t in vboxes)
+        foreach (var t in _vBoxes)
         {
             var vbColor = t.Avg(false);
             var d2 = Math.Sqrt(Math.Pow(color[0] - vbColor[0], 2)
@@ -59,9 +59,9 @@ public class ColorMap
     {
         VBox? max = null;
         double maxValue = 0;
-        var highestPopulation = vboxes.Select(p => p.Count(false)).Max();
+        var highestPopulation = _vBoxes.Select(p => p.Count(false)).Max();
 
-        foreach (var swatch in vboxes)
+        foreach (var swatch in _vBoxes)
         {
             var avg = swatch.Avg(false);
             var hsl = FromRgb(avg[0], avg[1], avg[2]).ToHsl();
