@@ -3,30 +3,17 @@
 /// <summary>
 ///     3D color space box.
 /// </summary>
-public class VBox
+public class VBox(int r1, int r2, int g1, int g2, int b1, int b2, IReadOnlyList<int> histo)
 {
-    private readonly int[] histo;
     private int[]? _avg;
     private int? _count;
     private int? _volume;
-    public int B1;
-    public int B2;
-    public int G1;
-    public int G2;
-    public int R1;
-    public int R2;
-
-    public VBox(int r1, int r2, int g1, int g2, int b1, int b2, int[] histo)
-    {
-        R1 = r1;
-        R2 = r2;
-        G1 = g1;
-        G2 = g2;
-        B1 = b1;
-        B2 = b2;
-
-        this.histo = histo;
-    }
+    public int B1 = b1;
+    public int B2 = b2;
+    public int G1 = g1;
+    public int G2 = g2;
+    public int R1 = r1;
+    public int R2 = r2;
 
     public int Volume(bool force)
     {
@@ -98,18 +85,18 @@ public class VBox
             }
 
             if (ntot > 0)
-                _avg = new[]
-                {
+                _avg =
+                [
                     Math.Abs(rsum / ntot), Math.Abs(gsum / ntot),
                     Math.Abs(bsum / ntot)
-                };
+                ];
             else
-                _avg = new[]
-                {
+                _avg =
+                [
                     Math.Abs(Mmcq.Mult * (R1 + R2 + 1) / 2),
                     Math.Abs(Mmcq.Mult * (G1 + G2 + 1) / 2),
                     Math.Abs(Mmcq.Mult * (B1 + B2 + 1) / 2)
-                };
+                ];
         }
 
         return _avg;

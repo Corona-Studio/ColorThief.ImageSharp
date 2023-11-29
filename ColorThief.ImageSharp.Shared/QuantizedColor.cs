@@ -1,17 +1,10 @@
 ﻿namespace ColorThief.ImageSharp.Shared;
 
-public class QuantizedColor
+public class QuantizedColor(Color color, int population)
 {
-    public QuantizedColor(Color color, int population)
-    {
-        Color = color;
-        Population = population;
-        IsDark = CalculateYiqLuma(color) < 128;
-    }
-
-    public Color Color { get; }
-    public int Population { get; }
-    public bool IsDark { get; }
+    public Color Color { get; } = color;
+    public int Population { get; } = population;
+    public bool IsDark { get; } = CalculateYiqLuma(color) < 128;
 
     public static int CalculateYiqLuma(Color color)
     {
