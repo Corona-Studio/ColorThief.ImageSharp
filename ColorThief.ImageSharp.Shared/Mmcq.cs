@@ -41,7 +41,7 @@ public static class Mmcq
         return histo;
     }
 
-    private static VBox VboxFromPixels(IList<byte[]> pixels, int[] histo)
+    private static VBox VboxFromPixels(IList<byte[]> pixels, IReadOnlyList<int> histo)
     {
         int rmin = 1000000, rmax = 0;
         int gmin = 1000000, gmax = 0;
@@ -128,7 +128,7 @@ public static class Mmcq
                         break;
                 }
 
-                return new[] { vbox1, vbox2 };
+                return [vbox1, vbox2];
             }
 
         throw new Exception("VBox can't be cut");
@@ -137,7 +137,7 @@ public static class Mmcq
     private static VBox?[]? MedianCutApply(IList<int> histo, VBox vbox)
     {
         if (vbox.Count(false) == 0) return null;
-        if (vbox.Count(false) == 1) return new[] { vbox.Clone(), null };
+        if (vbox.Count(false) == 1) return [vbox.Clone(), null];
 
         // only one pixel, no split
 
