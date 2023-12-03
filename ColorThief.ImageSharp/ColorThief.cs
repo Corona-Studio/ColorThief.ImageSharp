@@ -1,4 +1,6 @@
 ﻿using ColorThief.ImageSharp.Shared;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 using Color = ColorThief.ImageSharp.Shared.Color;
 
 namespace ColorThief.ImageSharp;
