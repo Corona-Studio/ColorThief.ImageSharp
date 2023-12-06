@@ -71,7 +71,7 @@ public struct Color
         return "#" + A.ToString("X2") + R.ToString("X2") + G.ToString("X2") + B.ToString("X2");
     }
 
-    public override string ToString()
+    public readonly override string ToString()
     {
         if (A == 255) return ToHexString();
 
